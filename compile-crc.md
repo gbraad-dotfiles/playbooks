@@ -6,8 +6,8 @@ This playbook compiles the CRC (OpenShift Local) binary from source. It is desig
 
 It depends on:
 
-  - Galaxy: gbraad.dotfiles
-  - Galaxy: gbraad.dotfiles-devenv
+  - Galaxy: `gbraad.dotfiles`
+  - Galaxy: `gbraad.dotfiles-devenv`
 
 It will checkout the `crc` repository, compile the binary inside a IDE container, and the resultingh binary will be available on the host in the 
 projects' `out` directory.
