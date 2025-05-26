@@ -1,0 +1,46 @@
+- hosts: all
+ 
+  vars:
+    runner_projects_dir: "{{ ansible_env.HOME }}/Projects"
+    devenv_projects_dir: "/home/gbraad/Projects"
+    crc_repo_url: "https://github.com/crc-org/crc"
+    crc_repo_dest: "{{ runner_projects_dir }}/crc"
+    devenv_repo_dest: "{{ devenv_projects_dir }}/crc"
+    devenv_prefix: "gofedora"
+  
+  roles:
+    - role: gbraad.dotfiles
+    - role: gbraad.dotfiles-devenv
+      vars:
+        prefix: "{{ devenv_prefix }}"
+        command: start
+ 
+  tasks:
+    - name: Ensure ~/Projects directory exists
+      ansible.builtin.file:
+        path: "{{ runner_projects_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Clone crc repo to ~/Projects/crc
+      ansible.builtin.git:
+        repo: "{{ crc_repo_url }}"
+        dest: "{{ crc_repo_dest }}"
+        version: main
+        update: yes
+
+    - name: Handle ownership of the crc repo if not run as gbraad
+      when: (user | default(ansible_user_id)) != "gbraad"
+      ansible.builtin.shell: |
+        source ~/.dotfiles/source.sh
+        devenv {{ devenv_prefix }} exec sudo chown gbraad {{ devenv_repo_dest }}
+        devenv {{ devenv_prefix }} exec su -l gbraad -c "git config --global --add safe.directory {{ devenv_repo_dest }}"
+      args:
+        executable: /bin/zsh
+
+    - name: Make clean and cross compile inside container
+      ansible.builtin.shell: |
+         source ~/.dotfiles/source.sh
+         devenv {{ devenv_prefix }} exec su -l gbraad -c "cd {{ devenv_repo_dest }} && make clean && make cross"
+      args:
+        executable: /bin/zsh
