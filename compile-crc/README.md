@@ -16,7 +16,19 @@ projects' `out` directory.
 
 ## Usage
 
+### Install dependencies
+
+Ensure you have the required Ansible Galaxy roles installed:
 ```zsh
 $ ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv
-$ ansible-playbook -i 100.64.142.12, site.yml -u runner
+```
+
+```zsh
+$ ansible-galaxy install -r requirements.yml
+```
+
+
+### Run the playbook
+```zsh
+$ ansible-playbook -i 100.64.142.12, compile-crc-[devenv].yml -u runner
 ```

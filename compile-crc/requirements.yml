@@ -1,0 +1,6 @@
+- name: gbraad.dotfiles
+  src: https://github.com/gbraad-dotfiles/ansible-role-dotfiles
+  version: master
+- name: gbraad.dotfiles-devenv
+  src: https://github.com/gbraad-dotfiles/ansible-role-dotfiles-devenv
+  version: master
