@@ -1,0 +1,49 @@
+name: Compile CRC
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-devenv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup environment
+        uses: gbraad-dotfiles/install-action@main
+
+      - name: Run devenv command - start
+        id: devenv
+        uses: gbraad-dotfiles/devenv-action@main
+        with:
+          prefix: gofedora
+          command: start
+          args: cat /etc/os-release
+
+      - name: Run devenv command - add ansible
+        uses: gbraad-dotfiles/devenv-action@main
+        with:
+          prefix: ${{ steps.devenv.outputs.prefix }}
+          command: exec
+          args: dnf install -y ansible
+
+      - name: Run devenv command - compile CRC
+        uses: gbraad-dotfiles/devenv-action@main
+        with:
+          prefix: ${{ steps.devenv.outputs.prefix }}
+          command: playbook
+          args: ./compile-crc/compile-crc-devenv.yml
+
+      - name: Upload Artifact - out
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: crc-out
+          path: ${{ github.workspace }}/Projects/crc/out
+          retention-days: 1
+          include-hidden-files: true
+  
