@@ -39,3 +39,13 @@ jobs:
           retention-days: 1
           include-hidden-files: true
   
+      - name: Tailscale
+        uses: gbraad-actions/tailscale-action@v1
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --ssh --accept-dns=false --operator=runner --advertise-exit-node
+          hostname: ${{ inputs.hostname }}
+          
+      - name: Hang around
+        run: |
+          sleep infinity
