@@ -13,7 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup environment
+      # This folder will be used with the container
+      - name: Create userdirs
+        run: |
+          cd ${{ github.workspace }}
+          mkdir -p Projects
+          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+
+      # Install dotfiles from upstream
+      - name: Setup dotfiles environment
         uses: gbraad-dotfiles/install-action@main
         with:
           upstream: true
