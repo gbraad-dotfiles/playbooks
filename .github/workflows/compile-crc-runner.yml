@@ -1,0 +1,38 @@
+name: Compile CRC
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-devenv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # This folder will be used with the container
+      - name: Create userdirs
+        run: |
+          cd ${{ github.workspace }}
+          mkdir -p Projects
+          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+
+      - name: Setup environment
+        run: |
+          apt update
+          apt install -y ansible
+          ansible-galaxy install -r compile-crc/requirements.yml
+          ansible-playbook compile-crc/in-runner.yml
+
+      - name: Upload Artifact - out
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: crc-out
+          path: ${{ github.workspace }}/Projects/crc/out
+          retention-days: 1
+          include-hidden-files: true
+  

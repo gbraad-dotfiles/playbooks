@@ -29,6 +29,13 @@ $ ansible-galaxy install -r requirements.yml
 
 
 ### Run the playbook
+
+#### In devenv
 ```zsh
-$ ansible-playbook -i 100.64.142.12, compile-crc-[devenv].yml -u runner
+$ devenv gefedora playbook in-devenv.yml
+```
+
+#### In runner
+```zsh
+$ ansible-playbook -i 100.64.142.12, in-runner.yml -u runner
 ```
