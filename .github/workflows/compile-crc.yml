@@ -34,13 +34,6 @@ jobs:
           command: start
           args: cat /etc/os-release
 
-      - name: Run devenv command - add ansible
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: ${{ steps.devenv.outputs.prefix }}
-          command: exec
-          args: dnf install -y ansible
-
       - name: Run devenv command - compile CRC
         uses: gbraad-dotfiles/devenv-action@main
         with:
