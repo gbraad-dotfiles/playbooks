@@ -17,7 +17,7 @@
   tasks:
     - name: Make clean and cross compile inside container
       ansible.builtin.shell: |
-         source ~/.dotfiles/source.sh
-         devenv {{ devenv_prefix }} playbook compile-crc/in-devenv.yml
+        source ~/.dotfiles/source.sh
+        devenv {{ devenv_prefix }} playbook compile-crc/in-devenv.yml
       args:
         executable: /bin/zsh
