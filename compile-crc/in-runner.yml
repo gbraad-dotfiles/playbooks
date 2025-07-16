@@ -12,7 +12,7 @@
     - role: gbraad.dotfiles-devenv
       vars:
         prefix: "{{ devenv_prefix }}"
-        command: start
+        command: noinit
  
   tasks:
     - name: Make clean and cross compile inside container
