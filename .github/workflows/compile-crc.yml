@@ -39,7 +39,7 @@ jobs:
         with:
           prefix: ${{ steps.devenv.outputs.prefix }}
           command: playbook
-          args: ./compile-crc/compile-crc-devenv.yml
+          args: ./compile-crc/in-devenv.yml
 
       - name: Upload Artifact - out
         if: ${{ always() }}

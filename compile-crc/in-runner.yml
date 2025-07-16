@@ -1,0 +1,23 @@
+---
+- name: Compile CRC on runner using devenv
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    devenv_prefix: "gofedora"
+  
+  roles:
+    - role: gbraad.dotfiles
+    - role: gbraad.dotfiles-devenv
+      vars:
+        prefix: "{{ devenv_prefix }}"
+        command: start
+ 
+  tasks:
+    - name: Make clean and cross compile inside container
+      ansible.builtin.shell: |
+         source ~/.dotfiles/source.sh
+         devenv {{ devenv_prefix }} playbook compile-crc/in-devenv.yml
+      args:
+        executable: /bin/zsh

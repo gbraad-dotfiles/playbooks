@@ -4,7 +4,6 @@
   connection: local
   gather_facts: false
 
- 
   vars:
     crc_repo_url: "https://github.com/crc-org/crc"
     devenv_projects_dir: "/home/gbraad/Projects"
