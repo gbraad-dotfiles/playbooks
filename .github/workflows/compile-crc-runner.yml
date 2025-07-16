@@ -35,6 +35,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: crc-out
-          path: ${{ github.workspace }}/Projects/crc/out
+          path: ${{ github.workspace }}/Projects/crc-org/crc/out
           retention-days: 1
           include-hidden-files: true
