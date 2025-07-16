@@ -2,7 +2,7 @@
 - name: Compile CRC on runner using devenv
   hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: true
 
   vars:
     devenv_prefix: "gofedora"
