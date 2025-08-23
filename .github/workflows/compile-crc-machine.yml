@@ -55,12 +55,20 @@ jobs:
           command: playbook
           args: ./compile-crc/compile.yml
 
-      # folders are not shared yet
-      #- name: Upload Artifact - out
-      #  if: ${{ always() }}
-      #  uses: actions/upload-artifact@v4
-      #  with:
-      #    name: crc-out
-      #    path: ${{ github.workspace }}/Projects/crc-org/crc/out
-      #    retention-days: 1
-      #    include-hidden-files: true
+      # macadam has no shared folder or copy function yet
+      - name: Copy artifacts out of the VM using SSH
+        uses: gbraad-actions/zsh-action@main
+        with:
+          as_user: runner
+          run: |
+            macadam ssh machine-test tar czf - Projects/crc-org/crc/out/ > /tmp/out.tar.gz                                                                                                    ST 1   main 
+            tar xzf /tmp/out.tar.gz 
+
+      - name: Upload Artifact - out
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: crc-out
+          path: ${{ github.workspace }}/Projects/crc-org/crc/out
+          retention-days: 1
+          include-hidden-files: true
