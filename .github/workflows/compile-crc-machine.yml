@@ -61,8 +61,8 @@ jobs:
         with:
           as_user: runner
           run: |
-            macadam ssh machine-test tar czf - Projects/crc-org/crc/out/ > /tmp/out.tar.gz                                                                                                    ST 1   main 
-            tar xzf /tmp/out.tar.gz 
+            machine gofedora exec tar czf - Projects/crc-org/crc/out/ > /tmp/out.tar.gz                                                                                                    ST 1   main 
+            tar xzf /tmp/out.tar.gz
 
       - name: Upload Artifact - out
         if: ${{ always() }}
