@@ -30,8 +30,8 @@ jobs:
           as_user: runner
           run: |
             apps macadam install
-            machine gofedora download
-            machine gofedora create
+            machine golang download
+            machine gofedora from golang
             machine gofedora start
 
       - name: Run machine command - compile CRC
