@@ -22,6 +22,14 @@ jobs:
       - name: Install required virtualization software
         continue-on-error: true
         uses: gbraad-actions/setup-virtualization@v2
+        
+      # not fully automated yet
+      - name: Install macadam (compiles for now)
+        uses: gbraad-actions/zsh-action@main
+        with:
+          as_user: runner
+          run: |
+            apps macadam install
 
       # not fully automated yet
       - name: Prepare VM
@@ -29,7 +37,6 @@ jobs:
         with:
           as_user: runner
           run: |
-            apps macadam install
             machine golang download
             machine gofedora from golang
             machine gofedora start
