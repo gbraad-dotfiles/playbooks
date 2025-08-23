@@ -1,0 +1,52 @@
+name: Compile CRC - machine
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-devenv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install dotfiles from upstream
+      - name: Setup dotfiles environment
+        uses: gbraad-dotfiles/install-action@main
+        with:
+          upstream: true
+
+      - name: Install required virtualization software
+        continue-on-error: true
+        uses: gbraad-actions/setup-virtualization@v2
+
+      # not fully automated yet
+      - name: Prepare VM
+        uses: gbraad-actions/zsh-action@main
+        with:
+          as_user: runner
+          run: |
+            apps macadam install
+            machine gofedora download
+            machine gofedora create
+            machine gofedora start
+
+      - name: Run machine command - compile CRC
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: gofedora
+          command: playbook
+          args: ./compile-crc/compile.yml
+
+      # folders are not shared yet
+      #- name: Upload Artifact - out
+      #  if: ${{ always() }}
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: crc-out
+      #    path: ${{ github.workspace }}/Projects/crc-org/crc/out
+      #    retention-days: 1
+      #    include-hidden-files: true

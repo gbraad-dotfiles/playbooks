@@ -1,4 +1,4 @@
-name: Compile CRC
+name: Compile CRC - runner
 
 on:
   workflow_dispatch:
