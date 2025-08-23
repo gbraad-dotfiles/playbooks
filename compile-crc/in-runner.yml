@@ -15,9 +15,9 @@
         command: noinit
  
   tasks:
-    - name: Make clean and cross compile inside container
+    - name: Make clean and cross compile using devenv
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        devenv {{ devenv_prefix }} playbook {{ playbook_dir }}/in-devenv.yml
+        devenv {{ devenv_prefix }} playbook {{ playbook_dir }}/compile.yml
       args:
         executable: /bin/zsh

@@ -17,6 +17,6 @@
         version: main
         update: yes
 
-    - name: Make clean and cross compile inside container
+    - name: Make clean and cross compile
       ansible.builtin.shell: |
          cd {{ devenv_repo_dest }} && make clean && make cross
