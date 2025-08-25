@@ -61,7 +61,7 @@ jobs:
         with:
           as_user: runner
           run: |
-            machine gofedora exec tar czf - Projects/crc-org/crc/out/ > /tmp/out.tar.gz                                                                                                    ST 1   main 
+            machine gofedora exec tar czf - Projects/crc-org/crc/out/ > /tmp/out.tar.gz
             tar xzf /tmp/out.tar.gz
 
       - name: Upload Artifact - out
@@ -72,3 +72,4 @@ jobs:
           path: ${{ github.workspace }}/Projects/crc-org/crc/out
           retention-days: 1
           include-hidden-files: true
+
