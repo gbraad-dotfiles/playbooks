@@ -26,6 +26,7 @@ jobs:
           sudo apt install -y ansible
           ansible-galaxy install -r compile-crc/requirements.yml
 
+      # this will install dotfiles using stable
       - name: Run Ansible Playbook
         run: |
           ansible-playbook compile-crc/compile-using-machine.yml
