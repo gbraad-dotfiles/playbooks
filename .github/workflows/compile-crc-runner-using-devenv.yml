@@ -29,7 +29,7 @@ jobs:
       # this will install dotfiles using stable
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile.yml -e '{"target_user": "gbraad"}'
+          ansible-playbook compile-crc/compile-using-devenv.yml
 
       - name: Upload Artifact - out
         if: ${{ always() }}
