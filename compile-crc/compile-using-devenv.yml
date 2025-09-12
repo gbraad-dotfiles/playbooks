@@ -18,6 +18,6 @@
     - name: Make clean and cross compile using devenv
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        devenv {{ env_prefix }} playbook {{ playbook_dir }}/compile-in-target.yml
+        devenv {{ env_prefix }} playbook {{ playbook_dir }}/compile-as-gbraad.yml
       args:
         executable: /bin/zsh

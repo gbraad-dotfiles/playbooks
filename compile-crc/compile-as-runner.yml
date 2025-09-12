@@ -5,12 +5,13 @@
   gather_facts: false
 
   vars:
+    user: "runner"
     crc_repo_url: "https://github.com/crc-org/crc"
-    projects_dir: "/home/runner/Projects"
+    projects_dir: "/home/{{ user }}/Projects"
     repo_dest: "{{ projects_dir }}/crc-org/crc"
 
   tasks:
-    - name: Clone crc repo to ~/Projects/crc-org/crc
+    - name: Clone crc repo
       ansible.builtin.git:
         repo: "{{ crc_repo_url }}"
         dest: "{{ repo_dest }}"

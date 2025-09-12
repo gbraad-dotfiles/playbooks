@@ -5,18 +5,19 @@
   gather_facts: false
 
   vars:
+    user: "gbraad"
     crc_repo_url: "https://github.com/crc-org/crc"
-    devenv_projects_dir: "/home/gbraad/Projects"
-    devenv_repo_dest: "{{ devenv_projects_dir }}/crc-org/crc"
+    projects_dir: "/home/{{ user }}/Projects"
+    repo_dest: "{{ projects_dir }}/crc-org/crc"
   
   tasks:
-    - name: Clone crc repo to ~/Projects/crc-org/crc
+    - name: Clone crc repo
       ansible.builtin.git:
         repo: "{{ crc_repo_url }}"
-        dest: "{{ devenv_repo_dest }}"
+        dest: "{{ repo_dest }}"
         version: main
         update: yes
 
     - name: Make clean and cross compile
       ansible.builtin.shell: |
-         cd {{ devenv_repo_dest }} && make clean && make cross
+         cd {{ repo_dest }} && make clean && make cross
