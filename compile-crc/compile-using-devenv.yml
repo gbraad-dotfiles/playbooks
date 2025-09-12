@@ -12,7 +12,7 @@
     - role: gbraad.dotfiles-devenv
       vars:
         prefix: "{{ env_prefix }}"
-        command: noinit
+        command: "noinit"
  
   tasks:
     - name: Make clean and cross compile using devenv
