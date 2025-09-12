@@ -1,0 +1,9 @@
+---
+- name: Install dotfiles - stable
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  roles:
+    - role: gbraad.dotfiles
+ 
