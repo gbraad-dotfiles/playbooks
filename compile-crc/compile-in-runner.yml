@@ -1,0 +1,22 @@
+---
+- name: Compile CRC on runner
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    crc_repo_url: "https://github.com/crc-org/crc"
+    projects_dir: "/home/runner/Projects"
+    repo_dest: "{{ projects_dir }}/crc-org/crc"
+
+  tasks:
+    - name: Clone crc repo to ~/Projects/crc-org/crc
+      ansible.builtin.git:
+        repo: "{{ crc_repo_url }}"
+        dest: "{{ repo_dest }}"
+        version: main
+        update: yes
+
+    - name: Make clean and cross compile
+      ansible.builtin.shell: |
+         cd {{ repo_dest }} && make clean && make cross

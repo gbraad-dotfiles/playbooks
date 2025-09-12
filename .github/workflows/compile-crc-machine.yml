@@ -49,7 +49,7 @@ jobs:
         with:
           prefix: gofedora
           command: playbook
-          args: ./compile-crc/compile.yml
+          args: ./compile-crc/compile-in-target.yml
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main

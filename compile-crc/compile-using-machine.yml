@@ -1,23 +1,23 @@
 ---
-- name: Compile CRC on runner using machine
+- name: Compile CRC using machine
   hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
-    machine_prefix: "gofedora"
+    env_prefix: "gofedora"
   
   roles:
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-machine
       vars:
-        prefix: "{{ machine_prefix }}"
+        prefix: "{{ env_prefix }}"
         command: from golang
  
   tasks:
     - name: Make clean and cross compile using machine
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        machine {{ machine_prefix }} playbook {{ playbook_dir }}/compile.yml
+        machine {{ env_prefix }} playbook {{ playbook_dir }}/compile-in-target.yml
       args:
         executable: /bin/zsh

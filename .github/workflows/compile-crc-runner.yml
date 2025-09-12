@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/in-devenv.yml -u runner
+          ansible-playbook compile-crc/compile-in-runner.yml
 
       - name: Upload Artifact - out
         if: ${{ always() }}
