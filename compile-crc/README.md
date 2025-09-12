@@ -12,13 +12,13 @@ projects' `out` directory.
 
 ### devenv-command used for build
 ```sh interactive
-devenv gofedora playbook compile-as-gbraad.yml
+devenv gofedora playbook compile.yml
 ```
 
 
 ### machine-command used for build
 ```sh interactive
-machine gofedora playbook compile-as-gbraad.yml
+machine gofedora playbook compile.yml
 ```
 
 
@@ -38,16 +38,22 @@ ansible-galaxy install -r requirements.yml
 ```
 
 
-### devenv-runner targeting an IP
+### devenv-playbook targeting an IP
 
 ```sh interactive
 ansible-playbook -i 100.64.142.12, compile-using-devenv.yml -u runner
 ```
 
-### machine-runner targeting an IP
+### machine-playbook targeting an IP
 
 ```sh interactive
 ansible-playbook -i 100.64.142.12, compile-using-machine.yml -u runner
+```
+
+### runner-playbook targeting the `runner` as user
+
+```sh interactive
+ansible-playbook compile.yml -e '{"target_user": "runner"}'
 ```
 
 

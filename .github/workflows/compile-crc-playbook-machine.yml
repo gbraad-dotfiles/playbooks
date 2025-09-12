@@ -47,7 +47,7 @@ jobs:
         uses: gbraad-dotfiles/machine-action@main
         with:
           prefix: gofedora
-          command: playbook ./compile-crc/compile-as-gbraad.yml
+          command: playbook ./compile-crc/compile.yml
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main

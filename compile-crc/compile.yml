@@ -1,11 +1,11 @@
 ---
-- name: Compile CRC on localhost (target machine)
+- name: Compile CRC on localhost
   hosts: localhost
   connection: local
   gather_facts: false
 
   vars:
-    user: "gbraad"
+    user: "{{ target_user | default('gbraad') }}"
     crc_repo_url: "https://github.com/crc-org/crc"
     projects_dir: "/home/{{ user }}/Projects"
     repo_dest: "{{ projects_dir }}/crc-org/crc"

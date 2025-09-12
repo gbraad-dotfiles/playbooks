@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-as-runner.yml
+          ansible-playbook compile-crc/compile.yml -e '{"target_user": "runner"}'
 
       - name: Upload Artifact - out
         if: ${{ always() }}

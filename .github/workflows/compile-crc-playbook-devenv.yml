@@ -37,7 +37,7 @@ jobs:
         uses: gbraad-dotfiles/devenv-action@main
         with:
           prefix: ${{ steps.devenv.outputs.prefix }}
-          command: playbook ./compile-crc/compile-as-gbraad.yml
+          command: playbook ./compile-crc/compile.yml
 
       - name: Upload Artifact - out
         if: ${{ always() }}
