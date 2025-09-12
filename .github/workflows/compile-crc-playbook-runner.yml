@@ -20,6 +20,13 @@ jobs:
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
 
+          
+      # Install dotfiles from upstream
+      - name: Setup dotfiles environment
+        uses: gbraad-dotfiles/install-action@main
+        with:
+          upstream: true
+
       - name: Setup environment
         run: |
           sudo apt update
