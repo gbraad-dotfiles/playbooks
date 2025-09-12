@@ -41,22 +41,19 @@ jobs:
         uses: gbraad-dotfiles/machine-action@main
         with:
           prefix: gofedora
-          command: from
-          args: golang
+          command: from golang
 
       - name: Run machine command - compile CRC
         uses: gbraad-dotfiles/machine-action@main
         with:
           prefix: gofedora
-          command: playbook
-          args: ./compile-crc/compile-as-gbraad.yml
+          command: playbook ./compile-crc/compile-as-gbraad.yml
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
         with:
           prefix: gofedora
-          command: exec
-          args: tar cf - Projects/crc-org/crc/out/ | tar xf -
+          command: exec tar cf - Projects/crc-org/crc/out/ | tar xf -
 
       - name: Upload Artifact - out
         if: ${{ always() }}
