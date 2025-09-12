@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  test-machine:
+  test-machine-playbook:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -66,5 +66,3 @@ jobs:
           path: ${{ github.workspace }}/Projects/crc-org/crc/out
           retention-days: 1
           include-hidden-files: true
-
-

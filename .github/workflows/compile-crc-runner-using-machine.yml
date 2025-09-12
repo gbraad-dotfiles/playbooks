@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  test-runner:
+  test-machine-runner:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,10 +24,18 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
+          ansible-galaxy install -r compile-crc/requirements.yml
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-in-runner.yml
+          ansible-playbook compile-crc/compile-using-machine.yml
+
+      - name: Run machine command - Copy artifacts out of the VM using SSH
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: gofedora
+          command: exec
+          args: tar cf - Projects/crc-org/crc/out/ | tar xf -
 
       - name: Upload Artifact - out
         if: ${{ always() }}

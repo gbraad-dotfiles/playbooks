@@ -1,4 +1,4 @@
-name: Compile CRC - devenv
+name: Compile CRC - runner
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  test-devenv:
+  test-devenv-runner:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,26 +20,15 @@ jobs:
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
 
-      # Install dotfiles from upstream
-      - name: Setup dotfiles environment
-        uses: gbraad-dotfiles/install-action@main
-        with:
-          upstream: true
+      - name: Setup environment
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+          ansible-galaxy install -r compile-crc/requirements.yml
 
-      - name: Run devenv command - start
-        id: devenv
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: gofedora
-          command: start
-          args: cat /etc/os-release
-
-      - name: Run devenv command - compile CRC
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: ${{ steps.devenv.outputs.prefix }}
-          command: playbook
-          args: ./compile-crc/compile-in-target.yml
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook compile-crc/compile-using-devenv.yml
 
       - name: Upload Artifact - out
         if: ${{ always() }}
@@ -49,4 +38,3 @@ jobs:
           path: ${{ github.workspace }}/Projects/crc-org/crc/out
           retention-days: 1
           include-hidden-files: true
-  
