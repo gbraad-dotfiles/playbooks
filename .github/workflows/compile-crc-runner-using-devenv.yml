@@ -1,4 +1,4 @@
-name: Compile CRC - runner
+name: Compile CRC - devenv on runner
 
 on:
   workflow_dispatch:

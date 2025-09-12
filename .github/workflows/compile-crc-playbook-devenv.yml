@@ -1,4 +1,4 @@
-name: Compile CRC - devenv
+name: Compile CRC - playbook devenv
 
 on:
   workflow_dispatch:

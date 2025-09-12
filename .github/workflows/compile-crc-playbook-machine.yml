@@ -1,4 +1,4 @@
-name: Compile CRC - machine
+name: Compile CRC - playbook machine
 
 on:
   workflow_dispatch:
