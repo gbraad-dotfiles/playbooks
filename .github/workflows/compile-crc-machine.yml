@@ -30,7 +30,6 @@ jobs:
         continue-on-error: true
         uses: gbraad-actions/setup-virtualization@v2
         
-      # not fully automated yet
       - name: Install macadam (compiles for now)
         uses: gbraad-actions/zsh-action@main
         with:
@@ -38,15 +37,12 @@ jobs:
           run: |
             apps macadam install
 
-      # not fully automated yet
-      - name: Prepare VM
-        uses: gbraad-actions/zsh-action@main
+      - name: Run machine command - create VM
+        uses: gbraad-dotfiles/machine-action@main
         with:
-          as_user: runner
-          run: |
-            machine golang download
-            machine gofedora from golang
-            machine gofedora start
+          prefix: gofedora
+          command: from
+          args: golang
 
       - name: Run machine command - compile CRC
         uses: gbraad-dotfiles/machine-action@main
@@ -55,13 +51,12 @@ jobs:
           command: playbook
           args: ./compile-crc/compile.yml
 
-      # macadam has no shared folder or copy function yet
-      - name: Copy artifacts out of the VM using SSH
-        uses: gbraad-actions/zsh-action@main
+      - name: Run machine command - Copy artifacts out of the VM using SSH
+        uses: gbraad-dotfiles/machine-action@main
         with:
-          as_user: runner
-          run: |
-            machine gofedora exec tar cf - Projects/crc-org/crc/out/ | tar xf -
+          prefix: gofedora
+          command: exec
+          args: tar cf - Projects/crc-org/crc/out/ | tar xf -
 
       - name: Upload Artifact - out
         if: ${{ always() }}

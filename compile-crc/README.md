@@ -30,11 +30,11 @@ $ remote_playbook user@test ~/playbook.yml
 ```
 
 
-### Run the playbook on a runner using devenv
+### Run the playbook on a runner
 
 Ensure you have the required Ansible Galaxy roles installed:
 ```zsh
-$ ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv
+$ ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv gbraad.dotfiles-machine
 ```
 or 
 
@@ -42,6 +42,14 @@ or
 $ ansible-galaxy install -r requirements.yml
 ```
 
+#### Using `devenv`
+
 ```zsh
-$ ansible-playbook -i 100.64.142.12, in-runner.yml -u runner
+$ ansible-playbook -i 100.64.142.12, in-devenv.yml -u runner
+```
+
+#### Using `machine`
+
+```zsh
+$ ansible-playbook -i 100.64.142.12, in-machine.yml -u runner
 ```
