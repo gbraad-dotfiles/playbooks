@@ -59,7 +59,9 @@ ansible-playbook compile.yml -e '{"target_user": "runner"}'
 
 ## Alternative options
 
-### [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf98b7193d87936415beb5c5bd05e51476d/zsh/.zshrc.d/ansible.zsh#L2)
+Using [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf98b7193d87936415beb5c5bd05e51476d/zsh/.zshrc.d/ansible.zsh#L2)
+
+### remote_playbook
 ```sh interactive
 remote_playbook podman test ~/playbook.yml
 remote_playbook macadam test ~/playbook.yml
