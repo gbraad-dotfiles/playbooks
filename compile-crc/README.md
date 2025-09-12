@@ -10,46 +10,52 @@ projects' `out` directory.
 
 ## Usage
 
-### Run the playbook in devenv
-```zsh
-$ devenv gofedora playbook compile.yml
+### devenv-command used for build
+```sh interactive
+devenv gofedora playbook compile-as-gbraad.yml
 ```
 
 
-### Run the playbook in machine
-```zsh
-$ machine gofedora playbook compile.yml
+### machine-command used for build
+```sh interactive
+machine gofedora playbook compile-as-gbraad.yml
 ```
 
 
-### Using [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf98b7193d87936415beb5c5bd05e51476d/zsh/.zshrc.d/ansible.zsh#L2)
-```zsh
-$ remote_playbook podman test ~/playbook.yml
-$ remote_playbook macadam test ~/playbook.yml
-$ remote_playbook user@test ~/playbook.yml
+## Run the playbook on a runner
+
+Use either to ensure you have the required Ansible Galaxy roles installed
+
+### dependencies using rolenames
+
+```sh interactive
+ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv gbraad.dotfiles-machine
+```
+
+### requirements file to install all roles
+```sh interactive
+ansible-galaxy install -r requirements.yml
 ```
 
 
-### Run the playbook on a runner
+### devenv-runner targeting an IP
 
-Ensure you have the required Ansible Galaxy roles installed:
-```zsh
-$ ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv gbraad.dotfiles-machine
-```
-or 
-
-```zsh
-$ ansible-galaxy install -r requirements.yml
+```sh interactive
+ansible-playbook -i 100.64.142.12, compile-using-devenv.yml -u runner
 ```
 
-#### Using `devenv`
+### machine-runner targeting an IP
 
-```zsh
-$ ansible-playbook -i 100.64.142.12, in-devenv.yml -u runner
+```sh interactive
+ansible-playbook -i 100.64.142.12, compile-using-machine.yml -u runner
 ```
 
-#### Using `machine`
 
-```zsh
-$ ansible-playbook -i 100.64.142.12, in-machine.yml -u runner
+## Alternative options
+
+### [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf98b7193d87936415beb5c5bd05e51476d/zsh/.zshrc.d/ansible.zsh#L2)
+```sh interactive
+remote_playbook podman test ~/playbook.yml
+remote_playbook macadam test ~/playbook.yml
+remote_playbook user@test ~/playbook.yml
 ```
