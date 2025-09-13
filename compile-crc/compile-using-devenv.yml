@@ -5,14 +5,14 @@
   gather_facts: true
 
   vars:
-    env_name: "gofedora"
+    env_name: "crcbuild"
   
   roles:
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-devenv
       vars:
         name: "{{ env_name }}"
-        command: "noinit"
+        command: "from gofedora"
  
   tasks:
     - name: Make clean and cross compile using devenv

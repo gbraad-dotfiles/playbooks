@@ -5,7 +5,7 @@
   gather_facts: true
 
   vars:
-    env_name: "gofedora"
+    env_name: "crcbuild"
   
   roles:
     - role: gbraad.dotfiles
