@@ -38,7 +38,7 @@ jobs:
         with:
           prefix: ${{ steps.devenv.outputs.prefix }}
           command: |
-            playbook ./compile-crc/compile.yml -e '{"target_user": "gbraad"}'
+            playbook ./compile/compile-crc.yml -e target_user="gbraad"
 
       - name: Upload Artifact - out
         if: ${{ always() }}

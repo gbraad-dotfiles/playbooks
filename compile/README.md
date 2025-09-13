@@ -1,10 +1,10 @@
-Compile CRC
+Compilation
 ===========
 
 
-This playbook compiles the CRC (OpenShift Local) binary from source. It is designed to run on a remote host, typically a Linux machine.
+This playbook compiles from source defined in a playbook. It is designed to run on a remote host, typically a Linux machine.
 
-It will checkout the `crc` repository, compile the binary inside a IDE container, and the resultingh binary will be available on the host in the 
+It will checkout the repository, compile the binary inside a build container, and the resulting binary will be available on the host in the 
 projects' `out` directory.
 
 
@@ -12,13 +12,13 @@ projects' `out` directory.
 
 ### devenv-command used for build
 ```sh interactive
-devenv gofedora playbook compile.yml
+devenv gofedora playbook compile-crc.yml
 ```
 
 
 ### machine-command used for build
 ```sh interactive
-machine gofedora playbook compile.yml
+machine gofedora playbook compile-crc.yml
 ```
 
 

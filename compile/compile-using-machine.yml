@@ -1,12 +1,13 @@
 ---
-- name: Compile CRC using machine
+- name: Compile using machine
   hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
     env_name: "{{ env_name | default('crcbuild') }}"
-  
+    playbook_name: "{{ playbook_name | default('compile-crc.yml') }}"
+
   roles:
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-apps
@@ -21,6 +22,6 @@
     - name: Make clean and cross compile using machine
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        machine {{ env_name }} playbook {{ playbook_dir }}/compile.yml
+        machine {{ env_name }} playbook {{ playbook_dir }}/{{ playbook_name }} -e target_user="gbraad"
       args:
         executable: /bin/zsh

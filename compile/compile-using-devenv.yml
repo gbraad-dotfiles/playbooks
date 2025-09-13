@@ -1,11 +1,12 @@
 ---
-- name: Compile CRC using devenv
+- name: Compile using devenv
   hosts: localhost
   connection: local
   gather_facts: true
 
   vars:
-    env_name: "{{ env_name | default('crcbuild') }}"
+    env_name: "{{ env_name | default('build') }}"
+    playbook_name: "{{ playbook_name | default('compile-crc.yml') }}"
   
   roles:
     - role: gbraad.dotfiles
@@ -18,6 +19,6 @@
     - name: Make clean and cross compile using devenv
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        devenv {{ env_name }} playbook {{ playbook_dir }}/compile.yml -e '{"target_user": "gbraad"}'
+        devenv {{ env_name }} playbook {{ playbook_dir }}/{{ playbook_name }} -e target_user="gbraad"
       args:
         executable: /bin/zsh

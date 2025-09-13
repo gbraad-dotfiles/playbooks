@@ -12,6 +12,7 @@ jobs:
 
     env:
       NAME: crcbuild
+      PLAYBOOK: "compile-crc.yml"
 
     steps:
       - name: Checkout repository
@@ -35,7 +36,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-using-devenv.yml -e env_name="${{ env.NAME }}"
+          ansible-playbook compile/compile-using-devenv.yml -e env_name="${{ env.NAME }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
       - name: Upload Artifact - out
         if: ${{ always() }}

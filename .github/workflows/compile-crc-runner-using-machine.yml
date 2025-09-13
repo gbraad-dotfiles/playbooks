@@ -12,6 +12,7 @@ jobs:
 
     env:
       NAME: crcbuild
+      PLAYBOOK: "compile-crc.yml"
 
     steps:
       - name: Checkout repository
@@ -45,7 +46,7 @@ jobs:
       
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-using-machine.yml -e env_name="${{ env.NAME }}"
+          ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
