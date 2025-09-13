@@ -24,7 +24,12 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y ansible
-          ansible-galaxy install -r compile-crc/requirements.yml
+          ansible-galaxy install -r requirements.yml
+
+      # Install dotfiles from upstream
+      - name: Setup dotfiles environment
+        run: |
+          ansible-playbook install-dotfiles/upstream.yml
 
       # this will install dotfiles using stable
       - name: Run Ansible Playbook

@@ -20,11 +20,16 @@ jobs:
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
 
+      - name: Setup environment
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+          ansible-galaxy install -r requirements.yml
+
       # Install dotfiles from upstream
       - name: Setup dotfiles environment
-        uses: gbraad-dotfiles/install-action@main
-        with:
-          upstream: true
+        run: |
+          ansible-playbook install-dotfiles/upstream.yml
 
       # necessary to access the VM
       - name: Write machinekey
@@ -43,12 +48,6 @@ jobs:
           as_user: runner
           run: |
             apps macadam install
-
-      - name: Setup environment
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-          ansible-galaxy install -r compile-crc/requirements.yml
 
       # this will install dotfiles using stable
       - name: Run Ansible Playbook
