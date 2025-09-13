@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      NAME: crcbuild
+      FROM: golang
       PLAYBOOK: "recipes/crc.yml"
       OUT_PATH: "Projects/crc-org/crc/out"
 
@@ -43,21 +45,22 @@ jobs:
             apps macadam install
 
       - name: Run machine command - create VM
+        id: machine
         uses: gbraad-dotfiles/machine-action@main
         with:
-          prefix: gofedora
-          command: from golang
+          prefix: ${{ env.NAME }}
+          command: from ${{ env.FROM }}
 
       - name: Run machine command - compile
         uses: gbraad-dotfiles/machine-action@main
         with:
-          prefix: gofedora
+          prefix: ${{ steps.machine.outputs.prefix }}
           command: playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
         with:
-          prefix: gofedora
+          prefix: ${{ steps.machine.outputs.prefix }}
           command: exec tar cf - ${{ env.OUT_PATH }} | tar xf -
 
       - name: Upload Artifact - out

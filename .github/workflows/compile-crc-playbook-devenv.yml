@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      NAME: crcbuild
+      FROM: gofedora
       PLAYBOOK: "recipes/crc.yml"
       OUT_PATH: "Projects/crc-org/crc/out"
 
@@ -35,8 +37,8 @@ jobs:
         id: devenv
         uses: gbraad-dotfiles/devenv-action@main
         with:
-          prefix: gofedora
-          command: start
+          prefix: ${{ env.NAME }}
+          command: from ${{ env.FROM }}
 
       - name: Run devenv command - compile
         uses: gbraad-dotfiles/devenv-action@main

@@ -12,6 +12,7 @@ jobs:
 
     env:
       NAME: crcbuild
+      FROM: golang
       PLAYBOOK: "recipes/crc.yml"
       OUT_PATH: "Projects/crc-org/crc/out"
 
@@ -47,7 +48,7 @@ jobs:
       
       - name: Run Ansible Playbook - compile
         run: |
-          ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e playbook_name="${{ env.PLAYBOOK }}"
+          ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
