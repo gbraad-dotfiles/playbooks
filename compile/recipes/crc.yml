@@ -1,5 +1,5 @@
 ---
-- name: Compile CRC on localhost
+- name: Compile CRC
   hosts: localhost
   connection: local
   gather_facts: false

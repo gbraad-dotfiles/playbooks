@@ -6,7 +6,7 @@
 
   vars:
     env_name: "{{ env_name | default('crcbuild') }}"
-    playbook_name: "{{ playbook_name | default('compile-crc.yml') }}"
+    playbook_name: "{{ playbook_name | default('recipes/crc.yml') }}"
 
   roles:
     - role: gbraad.dotfiles

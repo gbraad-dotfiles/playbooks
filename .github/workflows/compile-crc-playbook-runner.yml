@@ -9,6 +9,11 @@ on:
 jobs:
   test-playbook-runner:
     runs-on: ubuntu-latest
+
+    env:
+      PLAYBOOK: "recipes/crc.yml"
+      OUT_PATH: "Projects/crc-org/crc/out"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -32,15 +37,15 @@ jobs:
           sudo apt update
           sudo apt install -y ansible
 
-      - name: Run Ansible Playbook
+      - name: Run Ansible Playbook - compile
         run: |
-          ansible-playbook compile/compile-crc.yml
+          ansible-playbook compile/${{ env.PLAYBOOK }}
 
       - name: Upload Artifact - out
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: crc-out
-          path: ${{ github.workspace }}/Projects/crc-org/crc/out
+          name: out
+          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
           retention-days: 1
           include-hidden-files: true

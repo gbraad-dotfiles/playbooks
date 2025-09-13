@@ -12,13 +12,13 @@ projects' `out` directory.
 
 ### devenv-command used for build
 ```sh interactive
-devenv gofedora playbook compile-crc.yml
+devenv gofedora playbook recipes/crc.yml
 ```
 
 
 ### machine-command used for build
 ```sh interactive
-machine gofedora playbook compile-crc.yml
+machine gofedora playbook recipes/crc.yml
 ```
 
 
@@ -41,19 +41,19 @@ ansible-galaxy install -r requirements.yml
 ### devenv-playbook targeting an IP
 
 ```sh interactive
-ansible-playbook -i 100.64.142.12, compile-using-devenv.yml -u runner
+ansible-playbook -i 100.64.142.12, compile-using-devenv.yml -u runner -e playbook_name="recipes/crc.yml"
 ```
 
 ### machine-playbook targeting an IP
 
 ```sh interactive
-ansible-playbook -i 100.64.142.12, compile-using-machine.yml -u runner
+ansible-playbook -i 100.64.142.12, compile-using-machine.yml -u runner -e playbook_name="recipes/crc.yml"
 ```
 
 ### runner-playbook targeting the `runner` as user
 
 ```sh interactive
-ansible-playbook compile.yml -e '{"target_user": "runner"}'
+ansible-playbook recipes/crc.yml -e target_user="runner"
 ```
 
 
@@ -63,7 +63,7 @@ Using [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf
 
 ### remote_playbook
 ```sh interactive
-remote_playbook podman test ~/playbook.yml
-remote_playbook macadam test ~/playbook.yml
-remote_playbook user@test ~/playbook.yml
+remote_playbook podman test recipes/crc.yml
+remote_playbook macadam test recipes/crc.yml
+remote_playbook user@test recipes/crc.yml
 ```

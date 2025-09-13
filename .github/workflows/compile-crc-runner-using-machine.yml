@@ -12,7 +12,8 @@ jobs:
 
     env:
       NAME: crcbuild
-      PLAYBOOK: "compile-crc.yml"
+      PLAYBOOK: "recipes/crc.yml"
+      OUT_PATH: "Projects/crc-org/crc/out"
 
     steps:
       - name: Checkout repository
@@ -44,7 +45,7 @@ jobs:
         continue-on-error: true
         uses: gbraad-actions/setup-virtualization@v3
       
-      - name: Run Ansible Playbook
+      - name: Run Ansible Playbook - compile
         run: |
           ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
@@ -53,13 +54,13 @@ jobs:
         with:
           prefix: ${{ env.NAME }}
           command: exec
-          args: tar cf - Projects/crc-org/crc/out/ | tar xf -
+          args: tar cf - ${{ env.OUT_PATH}} | tar xf -
 
       - name: Upload Artifact - out
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: crc-out
-          path: ${{ github.workspace }}/Projects/crc-org/crc/out
+          name: out
+          path: ${{ github.workspace }}/${{ env.OUT_PATH}}
           retention-days: 1
           include-hidden-files: true

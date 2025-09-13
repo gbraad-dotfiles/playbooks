@@ -9,6 +9,11 @@ on:
 jobs:
   test-playbook-devenv:
     runs-on: ubuntu-latest
+
+    env:
+      PLAYBOOK: "recipes/crc.yml"
+      OUT_PATH: "Projects/crc-org/crc/out"
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -26,26 +31,26 @@ jobs:
         with:
           upstream: true
 
-      - name: Run devenv command - start
+      - name: Run devenv command - start container
         id: devenv
         uses: gbraad-dotfiles/devenv-action@main
         with:
           prefix: gofedora
           command: start
 
-      - name: Run devenv command - compile CRC
+      - name: Run devenv command - compile
         uses: gbraad-dotfiles/devenv-action@main
         with:
           prefix: ${{ steps.devenv.outputs.prefix }}
           command: |
-            playbook ./compile/compile-crc.yml -e target_user="gbraad"
+            playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
 
       - name: Upload Artifact - out
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: crc-out
-          path: ${{ github.workspace }}/Projects/crc-org/crc/out
+          name: out
+          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
           retention-days: 1
           include-hidden-files: true
   
