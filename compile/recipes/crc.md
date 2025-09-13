@@ -16,18 +16,26 @@ run crc.md compile machine
 [compile]
     playbook="crc.yml"
     out_path="Projects/crc-org/crc/out"
+
+[machine]
+    name="crcbuild"
+    from="golang"
+
+[devenv]
+    name="crcbuild"
+    from="gofedora"
 ```
 
 ### machine-compile
 ```sh interactive
-machine crcbuild from golang
-machine crcbuild playbook ${COMPILE_PLAYBOOK}
-machine crcbuild exec tar cf - ${COMPILE_OUT_PATH} | tar xf - -C ~
+machine ${MACHINE_NAME} from ${MACHINE_FROM}
+machine ${MACHINE_NAME} playbook ${COMPILE_PLAYBOOK}
+machine ${MACHINE_NAME} exec tar cf - ${COMPILE_OUT_PATH} | tar xf - -C ~
 ```
 
 ### devenv-compile
 ```sh interactive
-devenv crcbuild from gofedora
-devenv crcbuild playbook ${COMPILE_PLAYBOOK} -e target_user="gbraad"
+devenv ${DEVENV_NAME} from ${DEVENV_FROM}
+devenv ${DEVENV_NAME} playbook ${COMPILE_PLAYBOOK} -e target_user="gbraad"
 ```
 
