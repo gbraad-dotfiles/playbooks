@@ -11,7 +11,7 @@
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-devenv
       vars:
-        prefix: "{{ env_prefix }}"
+        name: "{{ env_prefix }}"
         command: "noinit"
  
   tasks:

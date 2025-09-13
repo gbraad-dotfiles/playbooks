@@ -12,7 +12,6 @@
     - role: gbraad.dotfiles-apps
       vars:
         appname: "macadam"
-        action: "install"
     - role: gbraad.dotfiles-machine
       vars:
         prefix: "{{ env_prefix }}"
