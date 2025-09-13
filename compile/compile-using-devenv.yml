@@ -6,6 +6,7 @@
 
   vars:
     env_name: "{{ env_name | default('build') }}"
+    env_from: "{{ env_from | default('gofedora') }}"
     playbook_name: "{{ playbook_name | default('recipes/crc.yml') }}"
   
   roles:
@@ -13,12 +14,13 @@
     - role: gbraad.dotfiles-devenv
       vars:
         name: "{{ env_name }}"
-        command: "from gofedora"
+        command: "from {{env_from }}"
  
   tasks:
     - name: Make clean and cross compile using devenv
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
         devenv {{ env_name }} playbook {{ playbook_dir }}/{{ playbook_name }} -e target_user="gbraad"
+        devenv {{ env_name }} 
       args:
         executable: /bin/zsh
