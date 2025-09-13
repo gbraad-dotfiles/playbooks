@@ -5,22 +5,22 @@
   gather_facts: true
 
   vars:
-    env_prefix: "gofedora"
+    env_name: "gofedora"
   
   roles:
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-apps
       vars:
-        appname: "macadam"
+        name: "macadam"
     - role: gbraad.dotfiles-machine
       vars:
-        prefix: "{{ env_prefix }}"
+        name: "{{ env_name }}"
         command: "from golang"
  
   tasks:
     - name: Make clean and cross compile using machine
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        machine {{ env_prefix }} playbook {{ playbook_dir }}/compile.yml
+        machine {{ env_name }} playbook {{ playbook_dir }}/compile.yml
       args:
         executable: /bin/zsh

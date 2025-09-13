@@ -5,19 +5,19 @@
   gather_facts: true
 
   vars:
-    env_prefix: "gofedora"
+    env_name: "gofedora"
   
   roles:
     - role: gbraad.dotfiles
     - role: gbraad.dotfiles-devenv
       vars:
-        name: "{{ env_prefix }}"
+        name: "{{ env_name }}"
         command: "noinit"
  
   tasks:
     - name: Make clean and cross compile using devenv
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
-        devenv {{ env_prefix }} playbook {{ playbook_dir }}/compile.yml -e '{"target_user": "gbraad"}'
+        devenv {{ env_name }} playbook {{ playbook_dir }}/compile.yml -e '{"target_user": "gbraad"}'
       args:
         executable: /bin/zsh
