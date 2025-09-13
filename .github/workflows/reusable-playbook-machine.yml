@@ -15,6 +15,20 @@ on:
       out_path:
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      environment_name:
+        type: string
+        default: "build"
+      environment_from:
+        type: string
+        default: "golang"
+      playbook:
+        required: true
+        type: string
+      out_path:
+        required: true
+        type: string
 
 jobs:
   test-playbook-machine:

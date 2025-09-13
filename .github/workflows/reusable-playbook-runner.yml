@@ -9,6 +9,14 @@ on:
       out_path:
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      playbook:
+        required: true
+        type: string
+      out_path:
+        required: true
+        type: string
 
 jobs:
   test-playbook-runner:
