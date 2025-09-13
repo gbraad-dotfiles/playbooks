@@ -7,58 +7,9 @@ on:
       - main
 
 jobs:
-  test-playbook-devenv:
-    runs-on: ubuntu-latest
-
-    env:
-      NAME: crcbuild
-      FROM: gofedora
-      PLAYBOOK: "recipes/crc.yml"
-      OUT_PATH: "Projects/crc-org/crc/out"
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # This folder will be used with the container
-      - name: Create userdirs
-        run: |
-          cd ${{ github.workspace }}
-          mkdir -p Projects
-          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
-
-      # Install dotfiles from upstream
-      - name: Setup dotfiles environment
-        uses: gbraad-dotfiles/install-action@main
-        with:
-          upstream: true
-
-      - name: Run devenv command - start container
-        id: devenv
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: ${{ env.NAME }}
-          command: from ${{ env.FROM }}
-
-      - name: Run devenv command - compile
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: ${{ steps.devenv.outputs.prefix }}
-          command: |
-            playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
-
-      - name: Remove build environment
-        uses: gbraad-dotfiles/devenv-action@main
-        with:
-          prefix: ${{ steps.devenv.outputs.prefix }}
-          command: rm
-
-      - name: Upload Artifact - out
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: out
-          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
-          retention-days: 1
-          include-hidden-files: true
-  
+  compile-crc-playbook-devenv:
+    uses: ./.github/workflows/reusable-playbook-devenv.yml
+    with:
+      playbook: "recipes/crc.yml"
+      out_path: "Projects/crc-org/crc/out"
+    secrets: inherit

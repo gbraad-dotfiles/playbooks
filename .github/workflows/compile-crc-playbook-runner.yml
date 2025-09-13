@@ -7,45 +7,9 @@ on:
       - main
 
 jobs:
-  test-playbook-runner:
-    runs-on: ubuntu-latest
-
-    env:
-      PLAYBOOK: "recipes/crc.yml"
-      OUT_PATH: "Projects/crc-org/crc/out"
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # This folder will be used with the container
-      - name: Create userdirs
-        run: |
-          cd ${{ github.workspace }}
-          mkdir -p Projects
-          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
-
-          
-      # Install dotfiles from upstream
-      - name: Setup dotfiles environment
-        uses: gbraad-dotfiles/install-action@main
-        with:
-          upstream: true
-
-      - name: Setup environment
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-
-      - name: Run Ansible Playbook - compile
-        run: |
-          ansible-playbook compile/${{ env.PLAYBOOK }}
-
-      - name: Upload Artifact - out
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: out
-          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
-          retention-days: 1
-          include-hidden-files: true
+  compile-crc-playbook-runner:
+    uses: ./.github/workflows/reusable-playbook-runner.yml
+    with:
+      playbook: "recipes/crc.yml"
+      out_path: "Projects/crc-org/crc/out"
+    secrets: inherit

@@ -7,61 +7,9 @@ on:
       - main
 
 jobs:
-  test-machine-runner:
-    runs-on: ubuntu-latest
-
-    env:
-      NAME: crcbuild
-      FROM: golang
-      PLAYBOOK: "recipes/crc.yml"
-      OUT_PATH: "Projects/crc-org/crc/out"
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Create userdirs 
-        run: |
-          cd ${{ github.workspace }}
-          mkdir -p Projects
-          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
-
-      - name: Setup environment
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-          ansible-galaxy install -r requirements.yml
-
-      - name: Setup dotfiles environment (upstream)
-        run: |
-          ansible-playbook install-dotfiles/upstream.yml
-
-      - name: Write machinekey to access the VM
-        uses: gbraad-dotfiles/machinekey-action@main
-        with:
-          ssh_private_key: ${{ secrets.SSH_MACHINE_PRIVATE }}
-          ssh_public_key: ${{ secrets.SSH_MACHINE_PUBLIC }}
-
-      - name: Install required virtualization software
-        continue-on-error: true
-        uses: gbraad-actions/setup-virtualization@v3
-      
-      - name: Run Ansible Playbook - compile
-        run: |
-          ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
-
-      - name: Run machine command - Copy artifacts out of the VM using SSH
-        uses: gbraad-dotfiles/machine-action@main
-        with:
-          prefix: ${{ env.NAME }}
-          command: exec
-          args: tar cf - ${{ env.OUT_PATH}} | tar xf -
-
-      - name: Upload Artifact - out
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: out
-          path: ${{ github.workspace }}/${{ env.OUT_PATH}}
-          retention-days: 1
-          include-hidden-files: true
+  compile-crc-runner-using-machine:
+    uses: ./.github/workflows/reusable-runner-using-machine.yml
+    with:
+      playbook: "recipes/crc.yml"
+      out_path: "Projects/crc-org/crc/out"
+    secrets: inherit

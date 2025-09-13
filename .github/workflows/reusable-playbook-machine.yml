@@ -1,0 +1,91 @@
+name: Compile using playbook on machine
+
+on:
+  workflow_call:
+    inputs:
+      environment_name:
+        required: true
+        type: string
+        default: "build"
+      environment_from:
+        required: true
+        type: string
+        default: "golang"
+      playbook:
+        required: true
+        type: string
+      out_path:
+        required: true
+        type: string
+
+jobs:
+  test-playbook-machine:
+    runs-on: ubuntu-latest
+
+    env:
+      NAME: ${{ inputs.environment_name }}
+      FROM: ${{ inputs.environment_from }}
+      PLAYBOOK: ${{ inputs.playbook }}
+      OUT_PATH: ${{ inputs.out_path }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Install dotfiles from upstream
+      - name: Setup dotfiles environment
+        uses: gbraad-dotfiles/install-action@main
+        with:
+          upstream: true
+
+      # necessary to access the VM
+      - name: Write machinekey
+        uses: gbraad-dotfiles/machinekey-action@main
+        with:
+          ssh_private_key: ${{ secrets.SSH_MACHINE_PRIVATE }}
+          ssh_public_key: ${{ secrets.SSH_MACHINE_PUBLIC }}
+
+      - name: Install required virtualization software
+        continue-on-error: true
+        uses: gbraad-actions/setup-virtualization@v3
+        
+      - name: Install macadam (compiles for now)
+        uses: gbraad-actions/zsh-action@main
+        with:
+          as_user: runner
+          run: |
+            apps macadam install
+
+      - name: Run machine command - create VM
+        id: machine
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: ${{ env.NAME }}
+          command: from ${{ env.FROM }}
+
+      - name: Run machine command - compile
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: ${{ steps.machine.outputs.prefix }}
+          command: playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
+
+      - name: Run machine command - Copy artifacts out of the VM using SSH
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: ${{ steps.machine.outputs.prefix }}
+          command: exec tar cf - ${{ env.OUT_PATH }} | tar xf -
+
+      - name: Remove build environment
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: ${{ steps.machine.outputs.prefix }}
+          command: rm
+
+      - name: Upload Artifact - out
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
+          retention-days: 1
+          include-hidden-files: true

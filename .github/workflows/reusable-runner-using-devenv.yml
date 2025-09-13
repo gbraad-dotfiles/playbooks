@@ -1,0 +1,62 @@
+name: Compile using devenv on runner
+
+on:
+  workflow_call:
+    inputs:
+      environment_name:
+        required: true
+        type: string
+        default: "build"
+      environment_from:
+        required: true
+        type: string
+        default: "gofedora"
+      playbook:
+        required: true
+        type: string
+      out_path:
+        required: true
+        type: string
+
+jobs:
+  test-devenv-runner:
+    runs-on: ubuntu-latest
+
+    env:
+      NAME: ${{ inputs.environment_name }}
+      FROM: ${{ inputs.environment_from }}
+      PLAYBOOK: ${{ inputs.playbook }}
+      OUT_PATH: ${{ inputs.out_path }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create userdirs
+        run: |
+          cd ${{ github.workspace }}
+          mkdir -p Projects
+          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+
+      - name: Setup environment
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+          ansible-galaxy install -r requirements.yml
+
+      - name: Setup dotfiles environment (upstream)
+        run: |
+          ansible-playbook install-dotfiles/upstream.yml
+
+      - name: Run Ansible Playbook - compile
+        run: |
+          ansible-playbook compile/compile-using-devenv.yml -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
+
+      - name: Upload Artifact - out
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: ${{ github.workspace }}/${{ env.OUT_PATH}}
+          retention-days: 1
+          include-hidden-files: true
