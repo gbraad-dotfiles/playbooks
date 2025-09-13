@@ -50,14 +50,12 @@ jobs:
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
 
-      - name: Setup environment
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-          ansible-galaxy install -r requirements.yml
+      - name: Setup ansible
+        uses: gbraad-actions/setup-ansible@v1
 
       - name: Setup dotfiles environment (upstream)
         run: |
+          ansible-galaxy install -r requirements.yml
           ansible-playbook install-dotfiles/upstream.yml
 
       - name: Write machinekey to access the VM

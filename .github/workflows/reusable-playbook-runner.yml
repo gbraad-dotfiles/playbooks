@@ -37,17 +37,14 @@ jobs:
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
 
-          
       # Install dotfiles from upstream
       - name: Setup dotfiles environment
         uses: gbraad-dotfiles/install-action@main
         with:
           upstream: true
 
-      - name: Setup environment
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
+      - name: Setup ansible
+        uses: gbraad-actions/setup-ansible@v1
 
       - name: Run Ansible Playbook - compile
         run: |

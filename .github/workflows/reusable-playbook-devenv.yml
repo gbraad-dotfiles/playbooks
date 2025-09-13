@@ -68,8 +68,7 @@ jobs:
         uses: gbraad-dotfiles/devenv-action@main
         with:
           prefix: ${{ steps.devenv.outputs.prefix }}
-          command: |
-            playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
+          command: playbook ./compile/${{ env.PLAYBOOK }} -e target_user="gbraad"
 
       - name: Remove build environment
         uses: gbraad-dotfiles/devenv-action@main
