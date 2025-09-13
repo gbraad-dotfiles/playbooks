@@ -5,8 +5,8 @@
   gather_facts: true
 
   vars:
-    env_name: "{{ env_name | default('build') }}"
-    env_from: "{{ env_from | default('golang') }}"
+    env_name: "{{ env_name | default('build', true) }}"
+    env_from: "{{ env_from | default('golang', true) }}"
     playbook_name: "{{ playbook_name | default('recipes/crc.yml') }}"
 
   roles:

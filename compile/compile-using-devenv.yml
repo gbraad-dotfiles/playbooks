@@ -5,8 +5,8 @@
   gather_facts: true
 
   vars:
-    env_name: "{{ env_name | default('build') }}"
-    env_from: "{{ env_from | default('gofedora') }}"
+    env_name: "{{ env_name | default('build', true) }}"
+    env_from: "{{ env_from | default('gofedora', true) }}"
     playbook_name: "{{ playbook_name | default('recipes/crc.yml') }}"
   
   roles:
@@ -14,7 +14,7 @@
     - role: gbraad.dotfiles-devenv
       vars:
         name: "{{ env_name }}"
-        command: "from {{env_from }}"
+        command: "from {{ env_from }}"
  
   tasks:
     - name: Make clean and cross compile using devenv
