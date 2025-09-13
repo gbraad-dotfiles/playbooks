@@ -21,6 +21,13 @@
       ansible.builtin.shell: |
         source ~/.dotfiles/source.sh
         devenv {{ env_name }} playbook {{ playbook_dir }}/{{ playbook_name }} -e target_user="gbraad"
-        devenv {{ env_name }} 
       args:
         executable: /bin/zsh
+
+    - name: Remove build environment
+      ansible.builtin.shell: |
+        source ~/.dotfiles/source.sh
+        devenv {{ env_name }} rm
+      args:
+        executable: /bin/zsh
+

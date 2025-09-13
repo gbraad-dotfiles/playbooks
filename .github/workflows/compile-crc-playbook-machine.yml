@@ -63,6 +63,12 @@ jobs:
           prefix: ${{ steps.machine.outputs.prefix }}
           command: exec tar cf - ${{ env.OUT_PATH }} | tar xf -
 
+      - name: Remove build environment
+        uses: gbraad-dotfiles/machine-action@main
+        with:
+          prefix: ${{ steps.machine.outputs.prefix }}
+          command: rm
+
       - name: Upload Artifact - out
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
