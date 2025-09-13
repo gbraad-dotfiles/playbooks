@@ -9,6 +9,10 @@ on:
 jobs:
   test-machine-runner:
     runs-on: ubuntu-latest
+
+    env:
+      NAME: crcbuild
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -41,12 +45,12 @@ jobs:
       
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-using-machine.yml
+          ansible-playbook compile-crc/compile-using-machine.yml -e env_name="${{ env.NAME }}"
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
         with:
-          prefix: crcbuild
+          prefix: ${{ env.NAME }}
           command: exec
           args: tar cf - Projects/crc-org/crc/out/ | tar xf -
 

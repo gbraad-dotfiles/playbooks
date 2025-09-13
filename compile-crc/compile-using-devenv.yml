@@ -5,7 +5,7 @@
   gather_facts: true
 
   vars:
-    env_name: "crcbuild"
+    env_name: "{{ env_name | default('crcbuild') }}"
   
   roles:
     - role: gbraad.dotfiles

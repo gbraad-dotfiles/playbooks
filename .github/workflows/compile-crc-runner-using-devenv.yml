@@ -9,6 +9,10 @@ on:
 jobs:
   test-devenv-runner:
     runs-on: ubuntu-latest
+
+    env:
+      NAME: crcbuild
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,7 +35,7 @@ jobs:
 
       - name: Run Ansible Playbook
         run: |
-          ansible-playbook compile-crc/compile-using-devenv.yml
+          ansible-playbook compile-crc/compile-using-devenv.yml -e env_name="${{ env.NAME }}"
 
       - name: Upload Artifact - out
         if: ${{ always() }}
