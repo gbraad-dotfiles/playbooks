@@ -13,8 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # This folder will be used with the container
-      - name: Create userdirs
+      - name: Create userdirs 
         run: |
           cd ${{ github.workspace }}
           mkdir -p Projects
@@ -26,13 +25,11 @@ jobs:
           sudo apt install -y ansible
           ansible-galaxy install -r requirements.yml
 
-      # Install dotfiles from upstream
-      - name: Setup dotfiles environment
+      - name: Setup dotfiles environment (upstream)
         run: |
           ansible-playbook install-dotfiles/upstream.yml
 
-      # necessary to access the VM
-      - name: Write machinekey
+      - name: Write machinekey to access the VM
         uses: gbraad-dotfiles/machinekey-action@main
         with:
           ssh_private_key: ${{ secrets.SSH_MACHINE_PRIVATE }}
@@ -41,15 +38,7 @@ jobs:
       - name: Install required virtualization software
         continue-on-error: true
         uses: gbraad-actions/setup-virtualization@v3
-        
-      - name: Install macadam (compiles for now)
-        uses: gbraad-actions/zsh-action@main
-        with:
-          as_user: runner
-          run: |
-            apps macadam install
-
-      # this will install dotfiles using stable
+      
       - name: Run Ansible Playbook
         run: |
           ansible-playbook compile-crc/compile-using-machine.yml

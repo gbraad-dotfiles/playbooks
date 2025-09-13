@@ -7,3 +7,6 @@
 - name: gbraad.dotfiles-machine
   src: https://github.com/gbraad-dotfiles/ansible-role-dotfiles-machine
   version: master
+- name: gbraad.dotfiles-apps
+  src: https://github.com/gbraad-dotfiles/ansible-role-dotfiles-apps
+  version: master

@@ -13,7 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # This folder will be used with the container
       - name: Create userdirs
         run: |
           cd ${{ github.workspace }}
@@ -26,12 +25,10 @@ jobs:
           sudo apt install -y ansible
           ansible-galaxy install -r requirements.yml
 
-      # Install dotfiles from upstream
-      - name: Setup dotfiles environment
+      - name: Setup dotfiles environment (upstream)
         run: |
           ansible-playbook install-dotfiles/upstream.yml
 
-      # this will install dotfiles using stable
       - name: Run Ansible Playbook
         run: |
           ansible-playbook compile-crc/compile-using-devenv.yml
