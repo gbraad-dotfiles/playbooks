@@ -5,9 +5,9 @@
   gather_facts: true
 
   vars:
-    env_name: "{{ env_name | default('build', true) }}"
-    env_from: "{{ env_from | default('golang', true) }}"
-    playbook_name: "{{ playbook_name | default('recipes/crc.yml') }}"
+    env_name: "build"
+    env_from: "golang"
+    playbook_name: "recipes/crc.yml"
 
   roles:
     - role: gbraad.dotfiles
