@@ -4,11 +4,9 @@ on:
   workflow_call:
     inputs:
       environment_name:
-        required: true
         type: string
         default: "build"
       environment_from:
-        required: true
         type: string
         default: "golang"
       playbook:
