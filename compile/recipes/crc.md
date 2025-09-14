@@ -16,6 +16,8 @@ run crc.md compile machine
 [compile]
     playbook="crc.yml"
     out_path="Projects/crc-org/crc/out"
+    out_dest="${HOME}"
+    flatten=0
 
 [machine]
     name="crcbuild"
@@ -28,9 +30,9 @@ run crc.md compile machine
 
 ### machine-compile
 ```sh interactive
-machine ${MACHINE_NAME} from ${MACHINE_FROM}
-machine ${MACHINE_NAME} playbook ${COMPILE_PLAYBOOK}
-machine ${MACHINE_NAME} exec tar cf - ${COMPILE_OUT_PATH} | tar xf - -C ~
+#machine ${MACHINE_NAME} from ${MACHINE_FROM}
+#machine ${MACHINE_NAME} playbook ${COMPILE_PLAYBOOK}
+machine ${MACHINE_NAME} exec tar cf - ${COMPILE_OUT_PATH} | tar xf - -C ${COMPILE_OUT_DEST} --strip-components=${COMPILE_FLATTEN}
 ```
 
 ### devenv-compile
