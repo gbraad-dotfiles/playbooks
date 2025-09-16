@@ -29,14 +29,14 @@ run crc.md compile machine
 ```
 
 ### machine-compile
-```sh interactive
+```sh evaluate
 #machine ${MACHINE_NAME} from ${MACHINE_FROM}
 #machine ${MACHINE_NAME} playbook ${COMPILE_PLAYBOOK}
 machine ${MACHINE_NAME} exec tar cf - ${COMPILE_OUT_PATH} | tar xf - -C ${COMPILE_OUT_DEST} --strip-components=${COMPILE_FLATTEN}
 ```
 
 ### devenv-compile
-```sh interactive
+```sh evaluate
 devenv ${DEVENV_NAME} from ${DEVENV_FROM}
 devenv ${DEVENV_NAME} playbook ${COMPILE_PLAYBOOK} -e target_user="gbraad"
 ```
