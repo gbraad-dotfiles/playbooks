@@ -10,13 +10,13 @@ projects' `out` directory.
 
 ## Usage
 
-### devenv-command : used for build
+### `devenv playbook` builds inside a container
 ```sh evaluate
 devenv gofedora playbook recipes/crc.yml
 ```
 
 
-### machine-command : used for build
+### `machine playbook` builds insinde a virtual machine
 ```sh evaluate
 machine gofedora playbook recipes/crc.yml
 ```
@@ -26,31 +26,31 @@ machine gofedora playbook recipes/crc.yml
 
 Use either to ensure you have the required Ansible Galaxy roles installed
 
-### dependencies : using rolenames
+### Install `dependencies` using rolenames
 
 ```sh evaluate
 ansible-galaxy install gbraad.dotfiles gbraad.dotfiles-devenv gbraad.dotfiles-machine
 ```
 
-### requirements : file to install all roles
+### Install `requirements` to run all roles
 ```sh evaluate
 ansible-galaxy install -r requirements.yml
 ```
 
 
-### devenv-playbook : targeting an IP
+### `playbook devenv` targets an IP and builds using a container
 
 ```sh evaluate
 ansible-playbook -i 100.64.142.12, compile-using-devenv.yml -u runner -e playbook_name="recipes/crc.yml"
 ```
 
-### machine-playbook : targeting an IP
+### `playbook machine` targets an IP and builds using a virtual machine
 
 ```sh evaluate
 ansible-playbook -i 100.64.142.12, compile-using-machine.yml -u runner -e playbook_name="recipes/crc.yml"
 ```
 
-### runner-playbook : targeting the `runner` as user
+### `playbook runner` targets the local machine as user to build
 
 ```sh evaluate
 ansible-playbook recipes/crc.yml -e target_user="runner"
@@ -61,7 +61,7 @@ ansible-playbook recipes/crc.yml -e target_user="runner"
 
 Using [remote_playbook](https://github.com/gbraad-dotfiles/upstream/blob/65c4cbf98b7193d87936415beb5c5bd05e51476d/zsh/.zshrc.d/ansible.zsh#L2)
 
-### remote_playbook
+### Using the `remote_playbook` command shows
 ```sh evaluate
 remote_playbook podman test recipes/crc.yml
 remote_playbook macadam test recipes/crc.yml
