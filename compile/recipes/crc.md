@@ -5,7 +5,7 @@
 
 This is an Actionfile that describes the build process of CRC using an Ansible playbook as recipe.
 
-```sh
+```
 run crc.md compile devenv
 run crc.md compile machine
 ```
