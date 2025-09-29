@@ -47,8 +47,10 @@ jobs:
         uses: gbraad-actions/setup-ansible@v1
 
       - name: Run Ansible Playbook - compile
-        run: |
-          ansible-playbook compile/${{ env.PLAYBOOK }}
+        uses: gbraad-dotfiles/playbook-action@main
+        with:
+          playbook: compile/${{ env.PLAYBOOK }}
+          command: execute
 
       - name: Upload Artifact - out
         if: ${{ always() }}

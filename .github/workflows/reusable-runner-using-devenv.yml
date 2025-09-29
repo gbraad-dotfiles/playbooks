@@ -56,7 +56,12 @@ jobs:
       - name: Setup dotfiles environment (upstream)
         run: |
           ansible-galaxy install -r requirements.yml
-          ansible-playbook install-dotfiles/upstream.yml
+
+      - name: Run Ansible Playbook - install dotfiles (upstream)
+        uses: gbraad-dotfiles/playbook-action@main
+        with:
+          playbook: install-dotfiles/upstream.yml
+          command: execute
 
       - name: Run Ansible Playbook - compile
         run: |
