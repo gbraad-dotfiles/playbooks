@@ -12,6 +12,10 @@ on:
       playbook:
         required: true
         type: string
+      out_name:
+        required: true
+        type: string
+        default: "uploads"
       out_path:
         required: true
         type: string
@@ -26,6 +30,10 @@ on:
       playbook:
         required: true
         type: string
+      out_name:
+        required: true
+        type: string
+        default: "uploads"
       out_path:
         required: true
         type: string
@@ -33,12 +41,6 @@ on:
 jobs:
   test-machine-runner:
     runs-on: ubuntu-latest
-
-    env:
-      NAME: ${{ inputs.environment_name }}
-      FROM: ${{ inputs.environment_from }}
-      PLAYBOOK: ${{ inputs.playbook }}
-      OUT_PATH: ${{ inputs.out_path }}
 
     steps:
       - name: Checkout repository
@@ -49,6 +51,8 @@ jobs:
           cd ${{ github.workspace }}
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+          mkdir -p Uploads
+          ln -s ${{ github.workspace }}/Uploads  ${HOME}/Uploads
 
       - name: Setup ansible
         uses: gbraad-actions/setup-ansible@v1
@@ -73,20 +77,24 @@ jobs:
         with:
           playbook: compile/compile-using-machine.yml
           command: execute
-          args: -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
+          args: -e env_name="${{ inputs.environment_name }}" -e env_from="${{ inputs.environment_from }}" -e playbook_name="${{ inputs.playbook }}"
+
+      - name: Prepare artifacts uploads folder
+        run: |
+          mkdir -p ${HOME}/Uploads/${{ inputs.out_name }}
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main
         with:
-          prefix: ${{ env.NAME }}
+          prefix: ${{ inputs.environment_name }}
           command: exec
-          args: tar cf - ${{ env.OUT_PATH}} | tar xf -
+          args: tar cf - ${{ inputs.out_path }} | tar xf - -C ${HOME}/Uploads/${{ inputs.out_name }}
 
-      - name: Upload Artifact - out
+      - name: Upload Artifact - uploads
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: out
-          path: ${{ github.workspace }}/${{ env.OUT_PATH}}
+          name: ${{ inputs.out_name }}
+          path: ${{ github.workspace }}/Uploads/
           retention-days: 1
           include-hidden-files: true

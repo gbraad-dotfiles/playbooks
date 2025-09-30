@@ -12,4 +12,5 @@ jobs:
     with:
       playbook: "recipes/crc.yml"
       out_path: "Projects/crc-org/crc/out"
+      out_name: "crc"
     secrets: inherit

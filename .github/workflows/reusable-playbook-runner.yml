@@ -6,6 +6,10 @@ on:
       playbook:
         required: true
         type: string
+      out_name:
+        required: true
+        type: string
+        default: "uploads"
       out_path:
         required: true
         type: string
@@ -14,6 +18,10 @@ on:
       playbook:
         required: true
         type: string
+      out_name:
+        required: true
+        type: string
+        default: "uploads"
       out_path:
         required: true
         type: string
@@ -21,10 +29,6 @@ on:
 jobs:
   test-playbook-runner:
     runs-on: ubuntu-latest
-
-    env:
-      PLAYBOOK: ${{ inputs.playbook }}
-      OUT_PATH: ${{ inputs.out_path }}
 
     steps:
       - name: Checkout repository
@@ -36,6 +40,8 @@ jobs:
           cd ${{ github.workspace }}
           mkdir -p Projects
           ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+          mkdir -p Uploads
+          ln -s ${{ github.workspace }}/Uploads  ${HOME}/Uploads
 
       # Install dotfiles from upstream
       - name: Setup dotfiles environment
@@ -49,14 +55,19 @@ jobs:
       - name: Run Ansible Playbook - compile
         uses: gbraad-dotfiles/playbook-action@main
         with:
-          playbook: compile/${{ env.PLAYBOOK }}
+          playbook: compile/${{ inputs.playbook }}
           command: execute
+      
+      - name: Copy artifacts to the uploads folder
+        run: |
+          mkdir -p ${HOME}/Uploads/${{ inputs.out_name }}
+          cp -r ${{ inputs.out_path }}/* ${HOME}/Uploads/${{ inputs.out_name }}
 
-      - name: Upload Artifact - out
+      - name: Upload Artifact - uploads
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: out
-          path: ${{ github.workspace }}/${{ env.OUT_PATH }}
+          name: ${{ inputs.out_name }}
+          path: ${{ github.workspace }}/Uploads/
           retention-days: 1
           include-hidden-files: true
