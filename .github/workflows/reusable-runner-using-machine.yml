@@ -74,8 +74,11 @@ jobs:
         uses: gbraad-actions/setup-virtualization@v3
       
       - name: Run Ansible Playbook - compile
-        run: |
-          ansible-playbook compile/compile-using-machine.yml -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
+        uses: gbraad-dotfiles/playbook-action@main
+        with:
+          playbook: compile/compile-using-machine.yml
+          command: execute
+          args: -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
       - name: Run machine command - Copy artifacts out of the VM using SSH
         uses: gbraad-dotfiles/machine-action@main

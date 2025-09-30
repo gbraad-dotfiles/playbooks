@@ -64,8 +64,11 @@ jobs:
           command: execute
 
       - name: Run Ansible Playbook - compile
-        run: |
-          ansible-playbook compile/compile-using-devenv.yml -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
+        uses: gbraad-dotfiles/playbook-action@main
+        with:
+          playbook: compile/compile-using-devenv.yml
+          command: execute
+          args: -e env_name="${{ env.NAME }}" -e env_from="${{ env.FROM }}" -e playbook_name="${{ env.PLAYBOOK }}"
 
       - name: Upload Artifact - out
         if: ${{ always() }}
