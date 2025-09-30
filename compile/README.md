@@ -15,10 +15,14 @@ projects' `out` directory.
 devenv gofedora playbook recipes/crc.yml
 ```
 
-
-### `machine playbook` builds insinde a virtual machine
+### `machine playbook` builds inside a virtual machine
 ```sh evaluate
 machine gofedora playbook recipes/crc.yml
+```
+
+### `runner playbook` builds locally
+```sh evaluate
+ansible-playbook recipes/crc.yml
 ```
 
 
