@@ -56,12 +56,7 @@ jobs:
       - name: Setup dotfiles environment (upstream)
         run: |
           ansible-galaxy install -r requirements.yml
-
-      - name: Run Ansible Playbook - install dotfiles (upstream)
-        uses: gbraad-dotfiles/playbook-action@main
-        with:
-          playbook: install-dotfiles/upstream.yml
-          command: execute
+          ansible-playbook install-dotfiles/upstream.yml
 
       - name: Write machinekey to access the VM
         uses: gbraad-dotfiles/machinekey-action@main
