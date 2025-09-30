@@ -1,0 +1,14 @@
+---
+- name: Template (hosts)
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Where am I?!
+      ansible.builtin.shell: |
+        source ~/.dotfiles/source.sh
+        country
+      args:
+        executable: /bin/zsh
+      register: country
+    - debug: msg="{{ country.stdout }}"
