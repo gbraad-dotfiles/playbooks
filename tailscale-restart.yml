@@ -1,0 +1,13 @@
+---
+- name: Tailscale restart (hosts)
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Restart Tailscale service
+      ansible.builtin.shell: |
+        sudo systemctl restart tailscaled
+      args:
+        executable: /bin/zsh
+      register: service
+    - debug: msg="{{ service.stdout }}"
