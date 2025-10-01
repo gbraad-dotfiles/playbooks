@@ -1,0 +1,13 @@
+---
+- name: Tailscale netcheck (hosts)
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Where am I?!
+      ansible.builtin.shell: |
+        tailscale netcheck
+      args:
+        executable: /bin/zsh
+      register: netcheck
+    - debug: msg="{{ netcheck.stdout }}"
